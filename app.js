@@ -1,12 +1,15 @@
-const express = require('express');
+import express from 'express';
+import cors from 'cors';
+
+import usuariosRoutes from './routes/usuarios.js';
+import productosRoutes from './routes/productos.js';
+import ventasRoutes from './routes/ventas.js';
+
 const app = express();
 const PORT = 3000;
 
+app.use(cors());
 app.use(express.json());
-
-const usuariosRoutes = require('./routes/usuarios');
-const productosRoutes = require('./routes/productos');
-const ventasRoutes = require('./routes/ventas');
 
 app.use('/usuarios', usuariosRoutes);
 app.use('/productos', productosRoutes);

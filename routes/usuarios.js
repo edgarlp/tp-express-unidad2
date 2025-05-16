@@ -1,7 +1,12 @@
-const express = require('express');
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 const router = express.Router();
-const fs = require('fs');
-const path = require('path');
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const usuariosFile = path.join(__dirname, '../data/usuarios.json');
 const ventasFile = path.join(__dirname, '../data/ventas.json');
@@ -9,9 +14,11 @@ const ventasFile = path.join(__dirname, '../data/ventas.json');
 function getUsuarios() {
   return JSON.parse(fs.readFileSync(usuariosFile));
 }
+
 function getVentas() {
   return JSON.parse(fs.readFileSync(ventasFile));
 }
+
 function saveUsuarios(data) {
   fs.writeFileSync(usuariosFile, JSON.stringify(data, null, 2));
 }
@@ -48,7 +55,9 @@ router.put('/:id', (req, res) => {
     usuarios[index] = { ...usuarios[index], ...req.body };
     saveUsuarios(usuarios);
     res.json(usuarios[index]);
-  } else res.status(404).send("Usuario no encontrado");
+  } else {
+    res.status(404).send("Usuario no encontrado");
+  }
 });
 
 router.delete('/:id', (req, res) => {
@@ -63,4 +72,4 @@ router.delete('/:id', (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
